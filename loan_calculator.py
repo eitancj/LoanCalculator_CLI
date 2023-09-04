@@ -12,6 +12,7 @@ clrOff = "\033[0;0m"
 fg = clrOn + "38;5;"
 fg_ = clrOn + "4;" + "38;5;"
 fgi = clrOn + "3;" + "38;5;"
+fgB = clrOn + "1;" + "38;5;"
 bg = clrOn + "48;5;"
 lGrn = fg + "010m"
 dGrn = fg + "002m"
@@ -21,68 +22,88 @@ dYlw = fg + "003m"
 slvr = fg + "007m"
 gold = fg + "221m"
 iwht = fgi + "015m"
+uwht = fg_ + "015m"
 
 # # Mensajes
-entradaNoNum = dYlw + "Ingresa un número válido por favor:"
-entrada0 = dYlw + "Mayor que zero por favor:"
+msgs = {'entradaNoNum':
+        {'es': dYlw + "Ingresa un número válido por favor:",
+         'en': dYlw + "Please enter a valid number:"},
+        'entrada0':
+        {'es': dYlw + "Mayor que zero por favor:",
+         'en': dYlw + "Must be greater than zero:"}}
 
-# # Monedas
-monedas = {'euro': '€'}, {'dollar': '$'}, {'pound': '£'}
+preguntas = {'capital':
+             {'es': '¿De cuántos euros es el préstamo?',
+              'en': 'How much is the loan, in euros?'},
+             'interes':
+             {'es': '¿Qué porcentaje tiene el interés anual?',
+              'en': 'What is the anual interest percentage?'},
+             'cuota':
+             {'es': 'Tu cuota mensual?'
+              f'\n{iwht}(sin tomar en cuenta el interés){clrOff}',
+              'en': 'A monthly payment of...?'
+              f'\n{iwht}(not taking into account the interest fees){clrOff}'}}
+
+ejemplos = {'capital': '1000, 345.42, 22500',
+            'interes': '5, 0.9, 2.6',
+            'cuota': '80, 1200, 55.5'}
+
+
+# # Preferencias
+monedas = {'euro': '€'}, {'dólar': '$'}, {'libra': '£'}, {'bitcoin': '₿'}
 
 # # Diverso
-deNuevo = ['sí', 'si', 's', 'yes', 'y', '1ra ronda']
-seguir = '1ra ronda'
-
-# Dar La Bienvenida
-print(f'\n{gold}€€€                        £££'
-      f'\n{dGrn}   Calculadora de Préstamos'
-      f'\n       Loan Calculator'
-      f'\n{gold}₿₿₿                        $$${clrOff}')
+deNuevo = ['sí', 'si', 's', 'yes', 'y']
+QuiereIngles = deNuevo
 
 
-# funciones
+# Funciones
 def valNum(msg: str, ex: str):
     while True:
         try:
             respuesta = float(input(f'\n{msg} {dGrn}'))
             if respuesta <= 0:
-                print(entrada0, ex + clrOff)
+                print(msgs['entrada0'][abc], ex + clrOff)
             else:
                 # entrada válida
                 print(clrOff, end='')
                 return respuesta
         except ValueError:
-            print(entradaNoNum, ex + clrOff)
+            print(msgs['entradaNoNum'][abc], ex + clrOff)
 
+
+# Mensaje de bienvenida
+print(f'\n{gold}€€€                        £££'
+      f'\n{dGrn}   Calculadora de Préstamos'
+      f'\n       Loan Calculator'
+      f'\n{gold}₿₿₿                        $$${clrOff}')
+
+# Preferencias del Usuario
+# # Preguntar –  idioma
+ingles = (input(f'\n\nEnglish? [y/{uwht}n{clrOff}] ' + lGrn) or 'n').strip().lower()
+print(clrOff, end='')
+abc = f"{'en' if ingles in QuiereIngles else 'es'}"
 
 # main
+seguir = 'sí'
 while seguir in deNuevo:
     #  Datos del Usuario
-
     # # Preguntar – préstamo en euros
-    pregunta = '¿De cuántos euros es el préstamo?'
-    ejemplos = '1000, 345.42, 22500'
-    cantidadPrestada = valNum(pregunta, ejemplos)
+    cantidadPrestada = valNum(preguntas['capital'][abc], ejemplos['capital'])
 
     # # Iniciar deuda
     cantidadDebida = cantidadPrestada
 
     # # Preguntar – interés anual
-    pregunta = '¿Qué porcentaje tiene el interés anual?'
-    ejemplos = '5, 0.9, 2.6'
-    interesAnual = valNum(pregunta, ejemplos)
+    interesAnual = valNum(preguntas['interes'][abc], ejemplos['interes'])
 
     # # Calcular interés mensual
     interesMensual = interesAnual / 100 / 12
 
     # # Preguntar – presupuesto mensual
-    pregunta = '¿Cuántos euros podrías pagar cada mes?'
-    f'\n({iwht}sin tomar en cuenta el interés{clrOff})'
-    ejemplos = '80, 1200, 55.5'
-    cuotaMensual = valNum(pregunta, ejemplos)
-    
+    cuotaMensual = valNum(preguntas['cuota'][abc], ejemplos['cuota'])
 
-    # ¡Cálculos!
+    # ¡ Cálculos :s !
     # # Iniciar variables
     meses = int(0)
     totalIntereses = 0
@@ -150,7 +171,7 @@ while seguir in deNuevo:
     # Imprimir Conclusión
     print(f'\n\n{uGrn}Conclusión{clrOff}')
     print(f'\nTardarías {duracion} en pagar un préstamo de {cantidadPrestada}€'
-          f'\nhaciendo un pago mensual de {cuotaMensual}€ con un interes anual de '
+          f'\nhaciendo un pago mensual de {cuotaMensual}€ con un interés anual de '
           f'{interesAnual}%.\n'
           f'\nLo harías con un total de {totalIntereses}€ en intereses acumulados,'
           f'\nel último pago siendo de {cantidadDebida}€,'
@@ -158,8 +179,9 @@ while seguir in deNuevo:
 
     # Seguir o Salir
     while True:
-        seguir = str(input((f"\n¿Seguir con otro cálculo [sí/no]? " + dGrn))).strip().lower()
-        
+        seguir = str(
+            input((f"\n¿Seguir con otro cálculo [sí/no]? " + dGrn))).strip().lower()
+
         # # Insistir en que la entrada no sea vacía
         if seguir != "":
             print(gold + '\n€          $          £          ₿\n' + clrOff)
