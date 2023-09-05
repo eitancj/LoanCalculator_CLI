@@ -1,6 +1,6 @@
 # Calculadora de Préstamos
 
-![](https://github.com/eitancj/preview_images/blob/main/loancalc_cli_600.png?raw=true)
+![](https://github.com/eitancj/preview_images/blob/main/loancalc_cli_1.png?raw=true)
 
 \
 Una herramienta interactiva para calcular préstamos personales.
@@ -19,6 +19,7 @@ Una herramienta interactiva para calcular préstamos personales.
 ### Tech Stack
 - Python 3.11.4
 - - pandas 2.1.0
+- macOS X
 
 ### Ejecutar Programa
 > [opcional] Crear un *venv* nuevo por si prefieres instalar los módulos en un entorno aislado.
@@ -31,6 +32,7 @@ source 'loan_calc/bin/activate'
 python3 -m pip install -r requirements.txt
 ``` 
 >  Ejecutar Calculadora de Préstamos
+>> *puede que el módulo de pandas tarde un poco en cargarse la primera vez*
 ```sh
 python3 loan_calculator.py
 ```
