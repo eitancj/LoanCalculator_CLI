@@ -4,6 +4,9 @@
 #         Python 3.11.4        #
 ### ------------------------ ###
 
+# modules
+import pandas as pd
+
 
 # Constantes
 # # Colores
@@ -31,6 +34,9 @@ msgs = {'entradaNoNum':
         'entrada0':
         {'es': dYlw + "Mayor que zero por favor:",
          'en': dYlw + "Must be greater than zero:"},
+        'tabla':
+        {'es': f"\n¿Mostar tabla de cálculos mensuales? [sí/{uwht}no{clrOff}]? ",
+         'en': f"\nShow monthly calculation table? [y/{uwht}n{clrOff}]? "},
         'seguir':
         {'es': f"\n¿Seguir con otro cálculo [sí/{uwht}no{clrOff}]? ",
          'en': f"\nProceed with another loan [y/{uwht}n{clrOff}]? "}}
@@ -52,14 +58,14 @@ ejemplos = {'capital': '1000, 345.42, 22500',
             'cuota': '80, 1200, 55.5'}
 
 periodos = {'año':
-            {'es': '1 año',
-             'en': '1 year'},
+            {'es': 'año',
+             'en': 'year'},
             'años':
             {'es': 'años',
              'en': 'years'},
             'mes':
-            {'es': '1 mes',
-             'en': '1 month'},
+            {'es': 'mes',
+             'en': 'month'},
             'meses':
             {'es': 'meses',
              'en': 'months'},
@@ -67,13 +73,24 @@ periodos = {'año':
             {'es': ' y ',
              'en': ' and '}}
 
+calculos = {'interes':
+            {'es': dYlw + 'Interés' + clrOff,
+             'en': dYlw + 'Interest' + clrOff},
+            'pago':
+            {'es': dYlw + 'Pago' + clrOff,
+             'en': dYlw + 'Payment' + clrOff},
+            'deuda':
+            {'es': dYlw + 'Deuda' + clrOff,
+             'en': dYlw + 'Debt' + clrOff},
+            'totalInt':
+            {'es': dYlw + 'Total Int.' + clrOff,
+             'en': dYlw + 'Total Int.' + clrOff}}
 
 # # Preferencias
 monedas = {'euro': '€'}, {'dólar': '$'}, {'libra': '£'}, {'bitcoin': '₿'}
 
 # # Diverso
-deNuevo = ['sí', 'si', 's', 'yes', 'y']
-QuiereIngles = deNuevo
+sis = ['sí', 'si', 's', 'yes', 'y']
 
 
 # Funciones
@@ -102,11 +119,12 @@ print(f'\n{gold}€€€                        £££'
 ingles = str(
     input(f'\n\nEnglish? [y/{uwht}n{clrOff}] ' + dGrn) or 'n').strip().lower()
 print(clrOff, end='')
-abc = f"{'en' if ingles in QuiereIngles else 'es'}"
+abc = f"{'en' if ingles in sis else 'es'}"
 
 # main
 seguir = 'sí'
-while seguir in deNuevo:
+
+while seguir in sis:
     #  Datos del Usuario
     # # Preguntar – préstamo en euros
     cantidadPrestada = valNum(preguntas['capital'][abc], ejemplos['capital'])
@@ -129,10 +147,11 @@ while seguir in deNuevo:
     totalIntereses = 0
 
     # # Cálcular intereses
+    completeDF = pd.DataFrame()
+
     while cantidadDebida > 0:
         # Sumar este mes
         meses += 1
-        # print("meses:", meses)
 
         # Cálculos mensuales
         interesDelMes = cantidadDebida * interesMensual
@@ -140,9 +159,14 @@ while seguir in deNuevo:
         totalIntereses += interesDelMes
         pagoDelMes = cuotaMensual + interesDelMes
 
-        # print("\ninteresDelMes:", interesDelMes)
-        # print("cantidadDebida:", cantidadDebida)
-        # print("totalIntereses:", totalIntereses)
+        monthlyDS = {
+            calculos['interes'][abc]: [f'{round(interesDelMes,2):,}'],
+            calculos['pago'][abc]: [f'{round(pagoDelMes,2):,}'],
+            calculos['deuda'][abc]: [f'{round(cantidadDebida,2):,}'],
+            calculos['totalInt'][abc]: [f'{round(totalIntereses,2):,}']
+        }
+        monthlyDF = pd.DataFrame(monthlyDS, index=[f"{periodos['mes'][abc].upper()} {str(meses)}"])
+        completeDF = pd.concat([completeDF, monthlyDF], )
 
         # Salir del bucle cuando llegamos al último mes
         # ^^ el último pago será almacenado en cantidadDebida
@@ -164,16 +188,17 @@ while seguir in deNuevo:
     if duracionAños > 1:
         duracion = str(duracionAños) + ' ' + periodos['años'][abc]
     elif duracionAños == 1:
-        duracion = periodos['año'][abc]
+        duracion = '1 ' + periodos['año'][abc]
 
     if duracionMeses > 1:
         if duracion == "":
             duracion = str(duracionMeses) + ' ' + periodos['meses'][abc]
         else:
-            duracion += periodos['y'][abc] + str(duracionMeses) + ' ' + periodos['meses'][abc]
+            duracion += periodos['y'][abc] + \
+                str(duracionMeses) + ' ' + periodos['meses'][abc]
     elif duracionMeses == 1:
         if duracion == "":
-            duracion = periodos['mes'][abc]
+            duracion = '1 ' + periodos['mes'][abc]
         else:
             duracion += periodos['y'][abc] + periodos['mes'][abc]
     duracion = lYlw + duracion + clrOff
@@ -207,6 +232,12 @@ while seguir in deNuevo:
     }
     print(conclusiones[abc])
 
-    # Seguir o Salir
+    # Preguntar – Mostrar tabla
+    quiereTabla = str(input(msgs['tabla'][abc] + dGrn) or 'no').strip().lower()
+    print(clrOff, end='')
+    if quiereTabla in sis:
+        print(completeDF)
+
+    # Preguntar – Seguir o Salir
     seguir = str(input(msgs['seguir'][abc] + dGrn) or 'no').strip().lower()
     print(gold + '\n€          $          £          ₿\n' + clrOff)

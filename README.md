@@ -14,13 +14,27 @@ Una herramienta interactiva para calcular préstamos.
 
 #### Tech Stack
 - Python 3.11.4
+- - pandas 2.1.0
 
-
-#### Ejecución
+#### Ejecutar Programa
+> [opcional] Crear un *venv* nuevo por si prefieres instalar los módulos en un entorno aislado.
+```sh
+python3 -m venv loan_calc
+source 'loan_calc/bin/activate'
+```
+> Instalar Requisitos
+```sh
+python3 -m pip install -r requirements.txt
+``` 
+>  Ejecutar Calculadora de Préstamos
 ```sh
 python3 loan_calculator.py
-``` 
+```
 
+## Asuntos Pendientes
+1. Arreglar: Las columnas de la tabla de cálculos mensuales no están bien alineadas
+2. Añadir: Opción para cambiar el tipo de moneda
+3. Añadir: README en Inglés
 
 ## Notas
 1. El tipo de préstamo que pretende calcular es el TIN en España.
