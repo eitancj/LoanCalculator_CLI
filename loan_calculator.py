@@ -30,7 +30,10 @@ msgs = {'entradaNoNum':
          'en': dYlw + "Please enter a valid number:"},
         'entrada0':
         {'es': dYlw + "Mayor que zero por favor:",
-         'en': dYlw + "Must be greater than zero:"}}
+         'en': dYlw + "Must be greater than zero:"},
+        'seguir':
+        {'es': f"\n¿Seguir con otro cálculo [sí/{uwht}no{clrOff}]? ",
+         'en': f"\nProceed with another loan [y/{uwht}n{clrOff}]? "}}
 
 preguntas = {'capital':
              {'es': '¿De cuántos euros es el préstamo?',
@@ -47,6 +50,22 @@ preguntas = {'capital':
 ejemplos = {'capital': '1000, 345.42, 22500',
             'interes': '5, 0.9, 2.6',
             'cuota': '80, 1200, 55.5'}
+
+periodos = {'año':
+            {'es': '1 año',
+             'en': '1 year'},
+            'años':
+            {'es': 'años',
+             'en': 'years'},
+            'mes':
+            {'es': '1 mes',
+             'en': '1 month'},
+            'meses':
+            {'es': 'meses',
+             'en': 'months'},
+            'y':
+            {'es': ' y ',
+             'en': ' and '}}
 
 
 # # Preferencias
@@ -80,7 +99,8 @@ print(f'\n{gold}€€€                        £££'
 
 # Preferencias del Usuario
 # # Preguntar –  idioma
-ingles = (input(f'\n\nEnglish? [y/{uwht}n{clrOff}] ' + lGrn) or 'n').strip().lower()
+ingles = str(
+    input(f'\n\nEnglish? [y/{uwht}n{clrOff}] ' + dGrn) or 'n').strip().lower()
 print(clrOff, end='')
 abc = f"{'en' if ingles in QuiereIngles else 'es'}"
 
@@ -142,20 +162,20 @@ while seguir in deNuevo:
     duracionMeses = int(meses % 12)
 
     if duracionAños > 1:
-        duracion = str(duracionAños) + " años"
+        duracion = str(duracionAños) + ' ' + periodos['años'][abc]
     elif duracionAños == 1:
-        duracion = "1 año"
+        duracion = periodos['año'][abc]
 
     if duracionMeses > 1:
         if duracion == "":
-            duracion = str(duracionMeses) + " meses"
+            duracion = str(duracionMeses) + ' ' + periodos['meses'][abc]
         else:
-            duracion += f' y {str(duracionMeses)} meses'
+            duracion += periodos['y'][abc] + str(duracionMeses) + ' ' + periodos['meses'][abc]
     elif duracionMeses == 1:
         if duracion == "":
-            duracion = "1 mes"
+            duracion = periodos['mes'][abc]
         else:
-            duracion += " y 1 mes"
+            duracion += periodos['y'][abc] + periodos['mes'][abc]
     duracion = lYlw + duracion + clrOff
 
     # # Formateando los números
@@ -169,22 +189,24 @@ while seguir in deNuevo:
         # ^^ usando el diccionario builtin de Python 'globals', y los f-string para convertir los valores de los variables de tipo 'int' y 'float' a strings más human-friendly. Con los decimales, uso la función round() y luego ':,' en lugar de directamente ':,.2f' pq el round acorta los zeros y el '.2f' los deja. Más limpio así.
 
     # Imprimir Conclusión
-    print(f'\n\n{uGrn}Conclusión{clrOff}')
-    print(f'\nTardarías {duracion} en pagar un préstamo de {cantidadPrestada}€'
-          f'\nhaciendo un pago mensual de {cuotaMensual}€ con un interés anual de '
-          f'{interesAnual}%.\n'
-          f'\nLo harías con un total de {totalIntereses}€ en intereses acumulados,'
-          f'\nel último pago siendo de {cantidadDebida}€,'
-          f'\ny pagando {cantidadPagada:}€ en total.\n')
+    conclusiones = {
+        'es': f'\n\n{uGrn}Conclusión{clrOff}\n'
+        f'\nTardarías {duracion} en pagar un préstamo de {cantidadPrestada}€'
+        f'\nhaciendo un pago mensual de {cuotaMensual}€ con un interés anual de '
+        f'{interesAnual}%.\n'
+        f'\nLo harías con un total de {totalIntereses}€ en intereses acumulados,'
+        f'\nel último pago siendo de {cantidadDebida}€,'
+        f'\ny pagando {cantidadPagada:}€ en total.\n',
+        'en': f'\n\n{uGrn}Conclusion{clrOff}\n'
+        f'\nIt would take you {duracion} to pay off a loan of {cantidadPrestada}€'
+        f'\ngiven a monthly payment of {cuotaMensual}€ and an annual interest rate of '
+        f'{interesAnual}%.\n'
+        f'\nThis would be accomplished by paying {totalIntereses}€ of accumulated interest fees,'
+        f'\nthe last payment amounting to {cantidadDebida}€,'
+        f'\nand paying a total of {cantidadPagada:}€ all together.\n'
+    }
+    print(conclusiones[abc])
 
     # Seguir o Salir
-    while True:
-        seguir = str(
-            input((f"\n¿Seguir con otro cálculo [sí/no]? " + dGrn))).strip().lower()
-
-        # # Insistir en que la entrada no sea vacía
-        if seguir != "":
-            print(gold + '\n€          $          £          ₿\n' + clrOff)
-            break
-        else:
-            print(clrOff, end='')
+    seguir = str(input(msgs['seguir'][abc] + dGrn) or 'no').strip().lower()
+    print(gold + '\n€          $          £          ₿\n' + clrOff)
