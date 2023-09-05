@@ -200,7 +200,7 @@ while seguir in sis:
         if duracion == "":
             duracion = '1 ' + periodos['mes'][abc]
         else:
-            duracion += periodos['y'][abc] + periodos['mes'][abc]
+            duracion += periodos['y'][abc] + '1 ' + periodos['mes'][abc]
     duracion = lYlw + duracion + clrOff
 
     # # Formateando los números
