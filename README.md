@@ -1,14 +1,14 @@
 # Calculadora de Préstamos
 
-![](https://github.com/eitancj/preview_images/blob/main/loancalc_cli_1.png?raw=true)
+![](https://github.com/eitancj/preview_images/blob/main/loancalc_cli_2.png?raw=true)
 
 \
 Una herramienta interactiva para calcular préstamos personales.
 
 ### Entradas
 - Cantidad prestada
-- Interes anual
-- Presupuesto mensual
+- Interés anual
+- Cuota mensual
 
 ### Resultados
 - El tiempo que tardarías en pagarlo todo
@@ -16,10 +16,25 @@ Una herramienta interactiva para calcular préstamos personales.
 - Total pagado
 - Tabla de gastos mensuales [opcional] 
 
+### Funcionalidades
+- Principal:  
+Calcular duración, intereses pagados y total pagado de un préstamo personal,   
+dados unos datos del usuario. 
+
+- Idiomas: Español, Inglés
+- Tipos de Moneda: Euro, Dólar, Libra, Bitcóin
+- Mostrar Tabla de Pagos Mensuales
+- Salida Formateada y Colorida
+- Comenzar Otro Cálculo seguidamente e indefinidamente
+- Recordar Preferencias del Usuario a la hora de comenzar otro cálculo
+
 ### Tech Stack
 - Python 3.11.4
 - - pandas 2.1.0
 - macOS X
+
+### Requisitos
+- Python >= 3.11.0
 
 ### Ejecutar Programa
 > [opcional] Crear un *venv* nuevo por si prefieres instalar los módulos en un entorno aislado.
@@ -48,10 +63,8 @@ deactivate
 > Si quieres deshacerte de los paquetes instalados de forma comprensiva, yo recomiendo usar el paquete *pip-autoremove*
 
 ### Asuntos Pendientes
-1. Arreglar: Las columnas de la tabla de cálculos mensuales no están bien alineadas
-2. Añadir: Opción para cambiar el tipo de moneda
-3. Añadir: Opción para elegir otro período de pago
-4. Añadir: README en Inglés
+1. Añadir: Opción para elegir otro período de pago
+2. Añadir: README en Inglés
 
 ### Notas
 1. El tipo de préstamo que la herramienta **pretende** calcular es el TIN en España de interés fijo.
