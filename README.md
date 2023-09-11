@@ -1,4 +1,5 @@
 # Calculadora de Préstamos
+[![en](https://img.shields.io/badge/English-blue.svg)](README.en.md)
 
 ![](https://github.com/eitancj/preview_images/blob/main/loancalc_cli_2.png?raw=true)
 
@@ -14,7 +15,7 @@ Una herramienta interactiva para calcular préstamos personales.
 - El tiempo que tardarías en pagarlo todo
 - Total intereses acumulados
 - Total pagado
-- Tabla de gastos mensuales [opcional] 
+- Tabla de pagos mensuales [opcional] 
 
 ### Funcionalidades
 - Principal:  
@@ -64,7 +65,6 @@ deactivate
 
 ### Asuntos Pendientes
 1. Añadir: Opción para elegir otro período de pago
-2. Añadir: README en Inglés
 
 ### Notas
 1. El tipo de préstamo que la herramienta **pretende** calcular es el TIN en España de interés fijo.

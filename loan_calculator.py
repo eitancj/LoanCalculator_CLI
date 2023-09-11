@@ -48,9 +48,9 @@ preguntas = {'capital':
               'en': 'How much is the loan, in euros?'},
              'interes':
              {'es': '¿Qué porcentaje tiene el interés anual?',
-              'en': 'What is the anual interest percentage?'},
+              'en': 'What is the annual interest rate?'},
              'cuota':
-             {'es': '¿Tu cuota mensual, en euros?'
+             {'es': '¿La cuota mensual, en euros?'
               f'\n{iwht}(sin tomar en cuenta el interés){clrOff}',
               'en': 'Monthly payments of how much, in euros?'
               f'\n{iwht}(not taking into account the interest fees){clrOff}'},
@@ -59,7 +59,7 @@ preguntas = {'capital':
               'en': 'Which Currency?'},
              'tabla':
              {'es': '\n¿Mostar tabla de pagos mensuales? [sí/no] ',
-                 'en': '\nShow monthly payment table? [yes/no] '},
+                 'en': '\nShow monthly-payment table? [yes/no] '},
              'seguir':
              {'es': f"\n¿Seguir con otro cálculo [sí/{uwht}no{clrOff}]? ",
                  'en': f"\nProceed with another loan [yes/{uwht}no{clrOff}]? "}}
@@ -335,15 +335,15 @@ while seguir in sis:
 
     conclusiones = {
         'es': f'\n\n{uGrn}Conclusión{clrOff}\n'
-        f'\nTardarías {duracion} en pagar un préstamo de {cantidadPrestada}'
-        f'\nhaciendo un pago mensual de {cuotaMensual} con un interés anual de '
+        f'\nSe tardaría {duracion} en pagar un préstamo de {cantidadPrestada}'
+        f'\nhaciendo pagos mensuales de {cuotaMensual} con un interés anual de '
         f'{interesAnual}%.\n'
-        f'\nLo harías con un total de {totalIntereses} en intereses acumulados,'
+        f'\nSe haría con un total de {totalIntereses} en intereses acumulados,'
         f'\nel último pago siendo de {cantidadDebida},'
         f'\ny pagando {cantidadPagada} en total.\n',
 
         'en': f'\n\n{uGrn}Conclusion{clrOff}\n'
-        f'\nIt would take you {duracion} to pay off a loan of {cantidadPrestada}'
+        f'\nIt would take {duracion} to pay off a loan of {cantidadPrestada},'
         f'\ngiven a monthly payment of {cuotaMensual} and an annual interest rate of '
         f'{interesAnual}%.\n'
         f'\nThis would be accomplished by paying {totalIntereses} of accumulated interest fees,'
